@@ -32,18 +32,18 @@
         constructor() {
             this.el = el('div.app',
                 this.navigation = new Navigation,
-                'Hello world!',
-                this.button = el('button', 'Click me')
+                this.content = el('div.content', 'Page content placeholder')
             );
 
-            this.button.onclick = () => {
-                router.navigate('/user/' + ~~(Math.random() * 100));
-            }
+//            this.button.onclick = () => {
+//                router.navigate('/user/' + ~~(Math.random() * 100));
+//            }
         }
 
         update(route) {
             log('route', route);
             this.navigation.update(route);
+            this.content.textContent = "Page " + route.path;
         }
     }
 
