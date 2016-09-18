@@ -3,7 +3,31 @@
 <title>Router test</title>
 <script src="/redom.js"></script>
 <script src="/router.js"></script>
-
+<style>
+    body {
+        font-family: sans-serif;
+        margin: 0;
+    }
+    nav {
+        background: black;
+        padding: 1rem;
+        font-weight: bolder;
+    }
+    a {
+        color: #0f0;
+        text-decoration: none;
+    }
+    a:not(:first-child) {
+        margin-left: 1rem;
+    }
+    a.selected {
+        color: white;
+        border-bottom: .2rem solid;
+    }
+    .content {
+        padding: 1rem;
+    }
+</style>
 <body>
 <script>
     var { el, mount } = redom;
