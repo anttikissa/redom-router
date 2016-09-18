@@ -16,7 +16,7 @@ function serve(res, file) {
 }
 
 var server = http.createServer((req, res) => {
-	log(req.url);
+	log(req.method, req.url);
 
 	if (req.url === '/favicon.ico') {
 		res.statusCode = 404;

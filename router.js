@@ -18,9 +18,10 @@ function parseLocation(location) {
 	function parseSearch(search) {
 		var result = {};
 
-		// Ignore escaping for now
-		search.slice(1).split('&').forEach(keyValue => {
-			var [ key, value ] = keyValue.split('=');
+		var keyValuePart = search.slice(1);
+
+		keyValuePart && keyValuePart.split('&').forEach(keyValue => {
+			var [key, value] = keyValue.split('=');
 			result[key] = value || '';
 		});
 
@@ -30,7 +31,7 @@ function parseLocation(location) {
 	return {
 		path: location.pathname,
 		query: parseSearch(location.search),
-		hash: location.hash
+		hash: location.hash.slice(1)
 	};
 }
 class Router {

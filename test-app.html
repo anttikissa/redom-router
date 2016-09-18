@@ -36,9 +36,9 @@
     class Navigation {
         constructor() {
             this.el = el('nav',
-                this.about = el('a', { href: '/about' }, "About"),
-                this.users = el('a', { href: '/users' }, "Users"),
-                this.files = el('a', { href: '/files' }, "Files")
+                this.about = el('a', { href: '/about' }, 'About'),
+                this.users = el('a', { href: '/users' }, 'Users'),
+                this.files = el('a', { href: '/files' }, 'Files')
             );
 
             this.about.onclick = this.users.onclick = this.files.onclick = function(event) {
@@ -48,6 +48,9 @@
         }
 
         update(route) {
+            for (let a of this.el.querySelectorAll('a')) {
+                a.classList.toggle('selected', a.getAttribute('href') === route.path);
+            }
             log('nav update', route);
         }
     }
@@ -67,7 +70,13 @@
         update(route) {
             log('route', route);
             this.navigation.update(route);
-            this.content.textContent = "Page " + route.path;
+            this.content.textContent = 'Page ' + route.path;
+            if (Object.keys(route.query).length) {
+                this.content.textContent += ', query: ' + JSON.stringify(route.query);
+            }
+            if (route.hash) {
+                this.content.textContent += ', hash: ' + route.hash;
+            }
         }
     }
 
