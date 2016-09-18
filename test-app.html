@@ -1,0 +1,58 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Router test</title>
+<script src="/redom.js"></script>
+<script src="/router.js"></script>
+
+<body>
+<script>
+    var { el, mount } = redom;
+    var log = console.log;
+
+    class Navigation {
+        constructor() {
+            this.el = el('nav',
+                this.about = el('a', { href: '/about' }, "About"),
+                this.users = el('a', { href: '/users' }, "Users"),
+                this.files = el('a', { href: '/files' }, "Files")
+            );
+
+            this.about.onclick = this.users.onclick = this.files.onclick = function(event) {
+                router.navigate(this.href);
+                event.preventDefault();
+            }
+        }
+
+        update(route) {
+            log('nav update', route);
+        }
+    }
+
+    class App {
+        constructor() {
+            this.el = el('div.app',
+                this.navigation = new Navigation,
+                'Hello world!',
+                this.button = el('button', 'Click me')
+            );
+
+            this.button.onclick = () => {
+                router.navigate('/user/' + ~~(Math.random() * 100));
+            }
+        }
+
+        update(route) {
+            log('route', route);
+            this.navigation.update(route);
+        }
+    }
+
+    var app = new App;
+    var router = new Router;
+    router.onRoute(route => {
+        app.update(route);
+    });
+
+    mount(document.body, app);
+</script>
+</body>
