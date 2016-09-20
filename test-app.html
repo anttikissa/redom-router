@@ -30,7 +30,7 @@
 </style>
 <body>
 <script>
-    var { el, mount } = redom;
+    var { el, mount, setChildren } = redom;
     var log = console.log;
 
     class Navigation {
@@ -55,21 +55,14 @@
         }
     }
 
-    class App {
+    class About {
         constructor() {
-            this.el = el('div.app',
-                this.navigation = new Navigation,
-                this.content = el('div.content', 'Page content placeholder')
-            );
-
-//            this.button.onclick = () => {
-//                router.navigate('/user/' + ~~(Math.random() * 100));
-//            }
+            this.el = el('div.page',
+                el('h1', 'About page'),
+                this.content = el('p'));
         }
 
         update(route) {
-            log('route', route);
-            this.navigation.update(route);
             this.content.textContent = 'Page ' + route.path;
             if (Object.keys(route.query).length) {
                 this.content.textContent += ', query: ' + JSON.stringify(route.query);
@@ -77,6 +70,56 @@
             if (route.hash) {
                 this.content.textContent += ', hash: ' + route.hash;
             }
+
+        }
+    }
+
+    class Users {
+        constructor() {
+            this.el = el('div.page',
+                    el('h1', 'Users page'));
+        }
+        update(route) {
+
+        }
+
+    }
+
+    class Files {
+        constructor() {
+            this.el = el('div.page',
+                    el('h1', 'Files page'));
+        }
+        update(route) {
+
+        }
+
+    }
+
+    class App {
+        constructor() {
+            this.el = el('div.app',
+                this.navigation = new Navigation,
+                this.content = el('div.content', 'Page content placeholder')
+            );
+        }
+
+        update(route) {
+            log('route', route);
+            this.navigation.update(route);
+
+            var pages = {
+                '/about': About,
+                '/users': Users,
+                '/files': Files
+            };
+            var Page = pages[route.path];
+            if (Page) {
+                var page = new Page;
+                page.update(route);
+            }
+
+            setChildren(this.content, Page ? [page] : []);
         }
     }
 
